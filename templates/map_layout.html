@@ -1,0 +1,345 @@
+$def with (map_content)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adrift: tracking the global ocean circulation</title>
+    <script src="/static/jquery-1.11.1.min.js"></script>
+    <script src="/static/jquery.blockUI.js"></script>
+    <script src="/static/jquery.history.js"></script>
+    <script src="/static/jquery.colorbox-min.js"></script>
+    <script src="/static/cssua.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=visualization"></script>
+
+    <link href="/static/ui.css" rel="stylesheet" media="screen"/>
+    <link href="/static/colorbox.css" rel="stylesheet" media="screen"/>
+    <link href="/static/stylesheet3.css" rel="stylesheet" media="screen"/>
+    <script>
+        if (cssua.ua.mobile) {
+            document.write("<link href=\"/static/stylesheet2_960pwide.css\" rel=\"stylesheet\" media=\"screen\"/>")
+        } else {
+            document.write("<link href=\"/static/stylesheet2_1024pwide.css\" rel=\"stylesheet\" media=\"screen\"/>")
+        }
+    </script>
+<!--     <meta property="og:title" content="Adrift.org.au"/>
+    <meta property="og:image" content="http://adrift.org.au/static/fblogo.jpg"/>
+    <meta property="og:description" content="Want to know where your message in a bottle will turn up or track down the path of local floating pollution? Use Adrift.org.au to forecast where rubber duckies or floating debris in the ocean is likely to end up in 10 years. So, take a leap into the virtual ocean today and see where it takes you."/>
+    <meta property="fb:admins" content="1087703262" />
+    <meta name="google-site-verification" content="MSgbQgLLWmbQniHSSRJhbmt7Z3VYbRbBVF7gJ3Fsda8" />
+    <meta name="Description" content="Want to know where your message in a bottle will turn up or track down the path of local floating pollution? Use Adrift.org.au to forecast where rubber duckies or floating debris in the ocean is likely to end up in 10 years. So, take a leap into the virtual ocean today and see where it takes you."/> -->
+
+</head>
+<body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+    var host = location.host;
+    if (host.indexOf("8080") == -1) {
+        var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-38940204-1']); _gaq.push(['_trackPageview']);
+        (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();
+    }
+</script>
+<script>
+    var top_px = 126;
+    if (cssua.ua.mobile) {
+        top_px = 100;
+    }
+    $$(document).ready(function(){
+        var show_page = function(selector) {
+            $$.colorbox({
+                width:"850px", top:top_px+"px", maxHeight:"510px", opacity:0.50,
+                html: "<div class='textbox'>" + $$(selector).html() + "</div>"
+            });
+        };
+        $$(".colorbox").click(function(a){
+            a = a.currentTarget;
+            show_page($$(a).attr("href"));
+        });
+        var id = location.hash.substr(1);
+        // Double checking these values here due to potential XSS
+        if ($$.inArray(id, ["what", "how", "background", "faq", "media", "bwdfwd", "team", "regions", "download"]) != -1) {
+            show_page("#" +id);
+        }
+
+        //functions below can later be used for an input box for lon at lat. Currently doesn't work inside colorboxes
+        //updatelatlonbutton();
+        //$$('#input_lat').on('input', function() {
+        //    updatelatlonbutton();
+        //});
+        //$$('#input_lng').on('input', function() {
+        //    updatelatlonbutton();
+        //});
+        //function updatelatlonbutton() {
+        //    if ($$("#input_lat").val().length > 0 & $$("#input_lng").val().length > 0) {
+        //        $$("#updatelatlon").html('<a href="map?lat='+$$("#input_lat").val()+'&lng='+$$("#input_lng").val()+'">Run experiment</a>');
+        //    }
+        //}
+    });
+</script>
+
+<div id="page_container">
+    <div style="position: relative">
+        <script>
+            if (cssua.ua.mobile) {
+                document.write("<img class=\"header\" src=\"/static/adrift_logo_960pwide.jpg\">")
+                document.write("<a href=\"http://www.climatescience.org.au\" style=\"display:block;position:absolute;width:260px;height:40px;top:0px;left:700px;\"></a>")
+                document.write("<div style=\"position:absolute;top:39px;left:120px;\">")
+            } else {
+                document.write("<img class=\"header\" src=\"/static/adrift_logo_1024pwide.jpg\">")
+                document.write("<a href=\"http://www.climatescience.org.au\" style=\"display:block;position:absolute;width:224px;height:50px;top:0px;left:800px;\"></a>")
+                document.write("<div style=\"position:absolute;top:65px;left:160px;\">")
+            }
+        </script>
+<!--         <ul class="navigation">
+            <li class="navigation"><a class="navigation colorbox" href="#what">What this site does</a></li>
+            <li class="navigation"><a class="navigation colorbox" href="#how">How do we know?</a></li>
+            <li class="navigation"><a class="navigation colorbox" href="#background">Duckies and Other Plastic</a></li>
+            <li class="navigation"><a class="navigation colorbox" href="#faq">FAQ</a></li>
+            <li class="navigation"><a class="navigation colorbox" href="#team">Team</a></li>
+            <li class="navigation"><a class="navigation colorbox" href="#download">Download</a></li>
+        </ul> -->
+    </div>
+
+<div id="control_panel"><div id="controls"></div></div>
+
+<script src="/static/adrift.js"></script>
+<script>
+    $$(document).ready(function(){
+        $$(document).ajaxStart(function(){
+            $$('div.map_notification_container').block({
+                message: '<div style="font-size:18px"><img src="/static/busy.gif" /> Now computing spread of argo floats...</div>',
+                css:{padding: '30px', width: '400px'}
+            });
+        });
+        $$(document).ajaxStop(function(){
+            $$('div.map_notification_container').unblock();
+        });
+    });
+</script>
+
+$:map_content
+
+<div id="bottombar"></div>
+<div id="bottombarcclogo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a>
+</div>
+<!-- <div id="bottombardisclaimertext">
+    <a href="http://adrift.org.au">Adrift.org.au</a> is intended as an
+    educational site. It should not be used for any policy decisions and comes
+    without any warranty. Any inquiries should be directed to <a
+        href="http://www.erik.vansebille.com">Dr Erik van Sebille</a> at the <a
+        href="http://www.unsw.edu.au">University of New South Wales</a>.
+
+    Support for this site is provided by the <a
+        href="http://www.climatescience.org.au/">ARC Centre of Excellence for
+        Climate System Science</a> and the <a
+        href="http://www.nectar.org.au/research-cloud">NeCTAR Research
+        Cloud</a>.
+</div> -->
+
+<div id="bottombarcolorbar">
+    <img width="400px" src="/static/colorbar.jpg"/>
+<!--<div style="font-size:10px;">
+    Latitude: <input id="input_lat" name="lat" type="text" maxlength="5" size="5"/>
+    Longitude: <input id="input_lng" name="lng" type="text" maxlength="5" size="5"/>
+    <span id="updatelatlon">Rerun experiment</span></div>
+</div>-->
+</div>
+
+
+<!-- <div class="textbox hidden" id="what">
+  <h2> Adrift away...</h2>
+  <p>
+  Want to know where your message in a bottle will turn up or track down the path of local floating pollution? Welcome to adrift, a website inspired by research into ocean circulation by <a target="_blank" href="http://erik.vansebille.com/science">Dr Erik Van Sebille</a> and the delightful book <a target="_blank" href="http://www.donovanhohn.com/Home.html">Moby Duck</a> about the true adventure of 28,800 rubber ducks lost at sea.
+  </p><p>
+  Here you can explore how all kinds of objects drift through the ocean &#45; from rubber duckies to <a target="_blank" href="http://www.plastinography.org">plastic pollution</a> &#45; and where each object might end up if it is washed out to sea from your beach. 
+  </p><p>
+  The website uses a scientific method that is based on observed tracks revealed by buoys in the <a target="_blank" href="http://www.aoml.noaa.gov/phod/dac/index.php"> Global Drifter Program</a> and other scientific research in this field. On this website you can see where ocean&#45;going debris travelled after the <a href="fukushima">Fukushima</a> disaster or the <a href="rubberduckiespill">path rubber ducks may have taken</a> after the famous <a target="_blank" href="http://en.wikipedia.org/wiki/Friendly_Floatees">Friendly Floaties</a> spill revealed in Moby Duck. 
+  </p><p>
+  <b>Happy Exploring, it is time to drift away!</b>
+  </p>
+</div>
+
+<div class="textbox hidden" id="how">
+  <h2>How do we know?</h2>
+  <p>
+  The scientific methods used to calculate the paths of floating debris through our oceans for 10 years after release are quite complicated. It is perhaps best summarised in the video below
+  </p><p>
+  <center>
+  <iframe width="750" height="422" src="http://www.youtube.com/embed/M4UK9Yt6A-s" frameborder="0" allowfullscreen></iframe>
+  </center>
+  </p><p>
+  Our oceans make up 70 per cent of the Earth&#39;s surface and are in constant motion. Driven by the sun and the wind our oceans develop mighty currents and <a target="_blank" href="http://oceanservice.noaa.gov/facts/eddy.html">eddies</a>, some of which can take centuries to loop through all of our planet&#39;s ocean basins. 
+  </p><p>
+  These currents also move through three dimensions. Many rise from the deep ocean near coastlines while other currents descend to the deepest parts of the ocean. These vertically descending currents are often, but not always, in the middle of the ocean in regions known as the <a target="_blank" href="http://en.wikipedia.org/wiki/Ocean_gyre">five great gyres</a>. These gyres are giant vortices spanning the whole ocean basin where water at the surface slowly spirals inwards until it sinks.
+  </p><p>
+  However, almost all plastic materials and lighter than water objects (such as those messages in a bottles) stay on the surface. 
+  </p><p>
+  Since the late 1970s, ocean scientists have tracked drifting buoys but it wasn&#39;t until 1982 the World Climate Research Programme put forward the idea of a standardised global array of drifting buoys. These buoys float with the currents just like plastics except &#45; like Twitter from the sea &#45; they send a short message to scientists every six hours about where they are and the conditions in that location. 
+  </p><p>
+  With this information, we have been able to create a statistical model of the surface pathways of our oceans. The Adrift website uses this model and generates an animation of the likely path and destination of floating debris over a ten year period into the future. 
+  </p><p>
+  For the full details go to <a target="_blank" href="http://www.erik.vansebille.com/science/">Erik Van Sebille&#39;s webpage</a> or the paper <a target="_blank" href="http://erik.vansebille.com/science/vansebille2012c.html">Origin, dynamics and evolution of ocean garbage patches from observed surface drifters</a>. If you have any further questions you can  <a target="_blank" href="http://erik.vansebille.com/science/contact.html">contact Erik van Sebille</a>
+  </p>
+</div>
+
+<div class="textbox hidden" id="background">
+  <h2>Duckies and Other Plastic</h2>
+  <p>
+  We show you a cute rubber duckie on the map, but the experiment you are doing when you click on the map is actually very sad. You are investigating <a href="http://plastinography.org">how plastics move in the ocean</a>.
+  </p><p>
+  The plastic litter is one of the <a target="_blank" href="http://www.abc.net.au/btn/story/s3591476.htm">biggest problems in our ocean</a>. It can <a target="_blank" href="http://www.environment.gov.au/biodiversity/threatened/publications/marine-debris-cr-consulting.html">entangle marine animals</a>, or they can <a target="_blank" href="http://www.whoi.edu/science/B/people/kamaral/plasticsarticle.html">mistake it for food and eat it</a>. If that happens, the plastic gets into the food-chain, and in particular the <a target="_blank" href="http://www.wired.com/wiredscience/2010/03/ocean-bpa/">chemicals in the plastics</a> can be very harmful.
+  </p><p>
+  Fortunately, there are many groups of people that want to do something about this problem. They for instance clean up beaches, or try to reduce the amount of plastics we use in our daily lives. So, if you want to help out yourself, why not contact one of the organisations below?
+  </p><p>
+  <a target="_blank" href="http://5gyres.org/">5 Gyres</a>, <a target="_blank" href="http://www.tangaroablue.org/">Tangaroa Blue</a>, <a target="_blank" href="http://www.surfrider.org/">Surfrider Foundation</a>, or <a target="_blank" href="http://www.plasticoceans.net/">Plastic Oceans</a>
+  </p><p>
+  If you want to know more about plastics in the ocean, go to our website <a href="http://plastinography.org">plastinography.org</a>.
+</div>
+
+<div class="textbox hidden" id="faq">
+    <h2> Frequently Asked Questions</h2>
+    <p>
+    <i><b>Q:</b> How does the pathway of marine plastics shown on this site relate to the plume of the radioactive material from the Fukushima disaster?</i>
+    </p><p>
+    <b>A:</b> The drifting buoys used as input for this website track the currents in the upper ocean. This site can therefore be used to study the pathways of the debris from the Fukushima tsunami itself. The plume of radioactive material, however, will not only stay at the surface. As we showed in a <a target="_blank" href="http://www.sciencedirect.com/science/article/pii/S096706371300112X">scientific study</a> (<a target="_blank" href="http://phys.org/news/2013-08-fukushima-radioactive-plume-years.html">see also here</a>), much of the material will actually move to greater depths. Nevertheless, the fastest pathways of radioactive material will be near the surface, where current speeds are greatest, and so the animation of the <a href="fukushima">Fukushima fallout</a> shows the route of that part of the radioactive material that reaches the US coast first.
+    </p><p>
+    <i><b>Q:</b> Why does the site say &#34;Sorry, we have no data for that ocean area&#34;?</i>
+    </p><p>
+    <b>A:</b> The website is built using data from observations only. And like any observations, these are not perfect. We just do not have data from every area in the ocean. This can be seen in the map below, which shows in red the areas where there are not enough surface drifting buoys for our analysis.
+    </p><p>
+    <img src="/static/coverage.jpg">  
+    </p><p> 
+    Most areas without sufficient coverage are very near the coastlines. But there are also extensive regions in the Arctic, around Antarctica, in the Indonesian Archipelago, the North Sea and some other marginal seas. The reasons for this poor coverage vary from sea ice to piracy, as can be read in this <a target="_blank" href="http://journals.ametsoc.org/doi/abs/10.1175/JTECH-D-11-00100.1">excellent article</a> (paywalled).
+    </p><p>
+    <i><b>Q:</b> Why does my plastic litter stay in the Mediterranean Sea?</i>
+    </p><p>
+    <b>A:</b> Again, this is a coverage issue, see also the map above. In the whole 30 years of the drifter project, there has never been a drifting buoy that crossed the Gibraltar Strait. In our transition matrix, the Mediterranean Ocean is therefore completely disconnected from the rest of the global ocean.
+    </p><p>
+    <i><b>Q:</b> What exactly does the scale mean?</i>
+    </p><p>
+    <b>A:</b> The scale on the bottom right runs from 0&#37; to 1&#37;. This may sound like a small number, but that is just because the plastic very quickly spreads over a large area. We have max-ed out areas where the plastic concentration is higher than 1&#37;, in order to focus on the spread of the plastic after a few years.
+    </p><p>
+    <i><b>Q:</b> Why can I see only plastic litter for the coming 10 years?</i>
+    </p><p>
+    <b>A:</b> The 10 years maximum is a trade-off between more information and faster response times. In principle, we can advect the plastic much longer than 10 years, but it will then take much longer before you see the result. If you really want to see plastic evolution on longer time scales, <a target="_blank" href="http://www.erik.vansebille.com/science/contact.html">contact us directly</a>.
+    </p><p>
+    <i><b>Q:</b> Can I export the raw data from the experiment? / Can I have multiple release points?</i>
+    </p><p>
+    <b>A:</b> If you want something more &#39;fancy&#39; than what the site can provide, either <a target="_blank" href="http://www.erik.vansebille.com/science/vansebille2012c.html">download the transit matrix</a> and start analysing it yourself, or <a target="_blank" href="http://www.erik.vansebille.com/science/contact.html">contact us</a>. We&#39;re happy to help out!
+    </p>
+</div>
+
+<div class="textbox hidden" id="team">
+    <h2>Team members</h2>
+    <div class="team_member">
+        <img src="static/erik.jpg"/>
+        <b>Dr Erik van Sebille</b> is a physical oceanographer at the University of New South Wales, who studies the large-scale circulation of the ocean. He is particularly interested in the connection between ocean basins and the processes that determine how much water &#39;leaks&#39; from one ocean basin into another. These connections are important for global climate and for the pathways of both marine organisms and debris. For more information, see <a target="_blank" href="http://www.erik.vansebille.com"> www.erik.vansebille.com</a>.
+    </div>
+    <div class="team_member">
+        <img src="static/david.jpg"/>
+        <b>David Fuchs</b> is a solutions architect with more than thirteen years of experience in software ranging from voice over IP to applications of machine learning techniques to large data sets. David brings combined experience in both engineering and science and is currently interested in software applications to large amount of data in general and climate data in particular.
+    </div>
+</div>
+
+<div class="textbox hidden" id="regions">
+    <h2>Regional experiments</h2>
+    <p>
+    <div style="height:300px">
+        <a href="australia">
+        <div style="position:absolute;height:200px">
+            <img src="static/regions/australiazoom.png" width="225px">
+            <div class="regiontext">
+                Australia
+            </div>
+        </div>
+        </a>
+        <a href="mediterranean">
+        <div style="position:absolute;height:200px;left:275px;">
+            <img src="static/regions/mediterraneanzoom.png" width="225px">
+            <div class="regiontext">
+                Mediterranean
+            </div>
+        </div>
+        </a>
+        <a href="europe">
+        <div style="position:absolute;height:200px;left:520px">
+            <img src="static/regions/europezoom.png" width="225px">
+            <div class="regiontext">
+                Europe
+            </div>
+        </div>
+        </a>
+    </div>
+  --><!--   <div style="height:100px">
+        <div style="position:absolute;height:300px;">
+            <img src="static/regions/newregions.png" width="350px">
+            <div class="regiontext">
+                More regions soon
+            </div>
+        </div>
+    </div>
+    </p>
+</div> -->
+
+<div class="textbox hidden" id="bwdfwd">
+    <h2>Choose the direction of your experiment</h2>
+    <p>
+    <div style="height:250px">
+        <a href="backward">
+        <div style="position:absolute;height:300px">
+            <img src="static/fwdbwd/bwdbutton_large.png" width="350px">
+            <div class="regiontext">
+                Backwards in time
+            </div>
+        </div>
+        </a>
+        <a href="map">
+        <div style="position:absolute;height:300px;left:425px;">
+            <img src="static/fwdbwd/fwdbutton_large.png" width="350px">
+            <div class="regiontext">
+                Forward in time
+            </div>
+        </div>
+        </a>
+    </div>
+    </p>
+</div>
+
+<!-- <div class="textbox hidden" id="media">
+    <h2>Media</h2>
+    <p>
+    Below is a list of coverage of Adrift.org.au in the Australian media
+    </p><p>
+    Australian SBS radio did a feature on the radioactive contaminants from the <a href="fukushima">Fukushima disaster</a> on their 22 August 2013 show. Listen to it <a href="http://www.sbs.com.au/podcasts/naca/radionews/episode/284509/How-dangerous-is-water-from-Fukushima">here</a>.
+    </p><p>
+    <a href="http://www.rrr.org.au/program/radio-marinara/">Radio Marinara</a>, on Melbourne's Triple R radio station and hosted by <a href="http://www.rrr.org.au/presenter/anthony-boxshall/">Anthony Boxhall</a>, covered Adrift.org.au on their August 4 show. Listen to it <a href="http://www.erik.vansebille.com/science/Radio-Marinara-20130804.mp3">here</a>.
+    </p><p>
+    <a href="http://www.abc.net.au/radionational/programs/lifematters/"> Life Matters</a> on ABC Radio National covered Adrift.org.au on their June 24 show. Listen to it <a href="http://www.abc.net.au/radionational/programs/lifematters/the-not-so-fantastic-plastic/4774526">here</a>.
+    </p>
+</div> -->
+
+<!-- <div class="textbox hidden" id="download">
+    <h2>Download the data</h2>
+    <p>
+    You can download the data of the experiment on the screen via the link below.
+    <div id="downloadbar_text">
+        <i>First click on a point on the map</i>
+    </div>
+
+    <div id="starlatlon" class="hidden"></div>
+    The data is a comma-separated file that should load into Excel. It has five columns: the year, the month, the latitude, the longitude and the weight. Each row in the file corresponds to one grid point on the map, and rows with the same year and month data are shown as one snapshot in the animation. The sum of weights for a given year and month is always 1, except for that grid cells where the weight is smaller than 0.00025 are not listed.
+    </p><p>
+    You are welcome and free to use the data in the file above for your scientific work. I just ask that you cite <a href="http://iopscience.iop.org/1748-9326/7/4/044040/">this scientific article</a> in any publications that use the data. Both the data and the paper are licensed under a <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-NonCommercial-ShareAlike license</a>.
+    If you have any questions on how to use the data, please <a href="http://erik.vansebille.com/science/">contact me</a>.
+    </p>
+</div> -->
+</div>
+
+</body>
+</html>

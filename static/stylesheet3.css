@@ -1,0 +1,263 @@
+/* TODO: Convert this to SCSS and get some nicer default styles in here */
+
+@import url(http://fonts.googleapis.com/css?family=Julius+Sans+One);
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: arial, sans-serif;
+    color: #313131;
+}
+
+body {
+    margin-top: 0em;
+}
+
+h1 {
+    font-family: 'Julius Sans One', sans-serif;
+    font-size: 72px;
+    color: #679;
+    text-shadow: -1px 2px #cdf; /* 235; */
+}
+
+.textbox {
+    padding:30px;
+    padding-top:10px;
+    padding-bottom:10px;
+    background:#fff;
+    text-align:justify;
+    font-size: 17px;
+    line-height: 140%;
+}
+p {
+    margin-top:1em;
+}
+a, img { /*for Internet Explorer*/
+    border:none;
+}
+a {
+    color: #043566;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgba(255, 50, 50, 1);
+}
+
+ul.navigation {
+    text-align: center;
+    font-weight: bold;
+    padding: 1em;
+}
+
+ul.navigation li {
+    display: inline;
+    margin: 0.2em;
+    padding: 0.3em;
+    background-color: rgba(256, 256, 256, 0.4);
+}
+
+ul.navigation li a {
+    color: #043566;
+    padding: 0.3em;
+    text-decoration: none;
+}
+
+ul.navigation li a:hover {
+    background-color: #eee;
+}
+
+#notification {
+    position: absolute;
+    height: 45px;
+    width: 520px;
+    z-index: 10;
+    background-color: rgba(100, 100, 100, 0.8);
+    float:left;
+}
+#notification.error {
+    background-color: rgba(255, 50, 50, 0.8);
+    left:0px;
+}
+
+#notification_text {
+    position: absolute;
+    width: 415px;
+    color: white;
+    font-weight: bold;
+    text-align:left;
+    padding-right: 1em;
+    padding-left:10px;
+    font-size: 19px;
+    line-height: 45px;
+}
+#notification_text.error {
+    left:200px;
+    width: 565px;
+}
+
+#notification_likesbar{
+    position: absolute;
+    width: 80px;
+    height: 23px;
+    float:left;
+    z-index: 10;
+    left:440px;
+    padding-top: 2px;
+    padding-bottom: 0.5em;
+}
+#zoombar {
+    position: absolute;
+    height: 25px;
+    width: 140px;
+    z-index: 10;
+    left:0px;
+    background-color: rgba(100, 100, 100, 0.8);
+    text-align:left;
+    padding-right: 1em;
+    padding-left:10px;
+    font-size: 14px;
+    line-height: 25px;
+    font-weight: normal;
+}
+#zoombar.error {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+a.zoombar {
+    color: white;
+    text-decoration: none;
+}
+a.zoombar:hover {
+    color: rgba(255, 50, 50, 1);
+}
+
+#downloadbar_text {
+    text-align: center;
+    font-size: 25px;
+    padding-top:20px;
+    padding-bottom:20px;
+}
+
+#bwdfwdbar {
+    position: absolute;
+    height: 25px;
+    width: 235px;
+    z-index: 10;
+    left: 170px;
+    background-color: rgba(100, 100, 100, 0.8);
+    text-align:left;
+    padding-right: 1em;
+    padding-left:10px;
+    font-size: 14px;
+    line-height: 25px;
+    font-weight: normal;
+}
+#bwdfwdbar.error {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+#australia_message {
+    position: absolute;
+    height: 45px;
+    width: 995px;
+    z-index: 10;
+    top:574px;
+    background-color: rgba(255, 50, 50, 0.8);
+    float:right;
+    color: white;
+    font-weight: bold;
+    text-align:center;
+    padding-right: 1em;
+    padding-left:10px;
+    font-size: 18px;
+    line-height: 45px;
+}
+
+.regiontext{
+    position:absolute;
+    top:120px;
+    height: 45px;
+    width: 196px;
+    z-index: 10;
+    background-color: rgba(100, 100, 100, 0.8);
+    float:left;
+    color: white;
+    font-weight: bold;
+    text-align:left;
+    padding-right: 1em;
+    padding-left:10px;
+    font-size: 19px;
+    line-height: 45px;
+}
+
+#bottombarcclogo{
+    width:100px;
+    float: left;
+}
+#bottombarcolorbar{
+    width: 400px;
+    float:right;
+}
+.loading {
+    margin: 1em;
+}
+
+.team_member img {
+    float: right;
+    margin: 0 0 10px 30px;
+}
+
+.team_member {
+    margin: 5px 0;
+    clear: both;
+}
+
+.hidden, .hidden iframe {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+.circle{
+    display:block;
+    width:100px;
+    height:100px;
+    border-radius:50px;
+    font-size:20px;
+    color:#fff;
+    line-height:100px;
+    text-align:center;
+    text-decoration:none;
+    background:#FF0;
+    opacity:0.2;
+}
+.menu:hover{
+    color:#ccc;
+    text-decoration:none;
+    background:#333
+}
+
+.engagefwdbwd{
+    color:#FFF;
+    font-size:20px;
+}
+
+.duckiebubble {
+    font-family: courier,sans-serif;
+    font-size: 18px;
+    line-height: 140%;
+}

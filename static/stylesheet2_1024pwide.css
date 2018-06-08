@@ -1,0 +1,30 @@
+#page_container {
+    width: 1024px;
+    margin: 0 auto;
+}
+
+#map_notification_container {
+    margin-top: 10px;
+    position: relative;
+}
+
+#notification {
+    left:504px;
+}
+
+#notification.error {
+    width: 1024px;
+}
+#notification_likesbar.error {
+    left:879px;
+}
+
+#bottombar {
+    padding-top: 0.5em;
+    width: 1024px;
+}
+#bottombardisclaimertext{
+    font-size:9px;
+    width: 500px;
+    float: left;
+}

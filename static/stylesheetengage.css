@@ -1,0 +1,130 @@
+/* TODO: Convert this to SCSS and get some nicer default styles in here */
+
+@import url(http://fonts.googleapis.com/css?family=Julius+Sans+One);
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: arial, sans-serif;
+    color: #313131;
+}
+
+body {
+    margin-top: 0em;
+}
+
+h1 {
+    font-family: 'Julius Sans One', sans-serif;
+    font-size: 72px;
+    color: #679;
+    text-shadow: -1px 2px #cdf; /* 235; */
+}
+
+.textbox {
+    padding:30px;
+    padding-top:10px;
+    padding-bottom:10px;
+    background:#fff;
+    text-align:justify;
+    font-size: 17px;
+    line-height: 140%;
+}
+
+.textboxstarts {
+    padding:30px;
+    padding-top:10px;
+    padding-bottom:10px;
+    background:#fff;
+    text-align:left;
+    font-size: 17px;
+    line-height: 140%;
+}
+
+p {
+    margin-top:1em;
+}
+a, img { /*for Internet Explorer*/
+    border:none;
+}
+a {
+    color: #043566;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgba(255, 50, 50, 1);
+}
+
+ul.navigation {
+    text-align: center;
+    font-weight: bold;
+    padding: 1em;
+}
+
+ul.navigation li {
+    display: inline;
+    margin: 0.2em;
+    padding: 0.3em;
+    background-color: rgba(256, 256, 256, 0.4);
+}
+
+ul.navigation li a {
+    color: #043566;
+    padding: 0.3em;
+    text-decoration: none;
+}
+
+ul.navigation li a:hover {
+    background-color: #eee;
+}
+
+#page_container {
+    width: 960px;
+    margin: 0 auto;
+}
+
+#bottombar {
+    padding-top: 0.5em;
+    width: 960px;
+}
+#bottombardisclaimertext{
+    font-size:8px;
+    width: 436px;
+    float: left;
+}
+
+#bottombarcclogo{
+    width:100px;
+    float: left;
+}
+#bottombarcolorbar{
+    width: 400px;
+    float:right;
+}
+
+
+.circle{
+    display:block;
+    width:100px;
+    height:100px;
+    border-radius:50px;
+    font-size:20px;
+    color:#fff;
+    line-height:100px;
+    text-align:center;
+    text-decoration:none;
+    background:#FF0;
+    opacity:0.2;
+}
+.menu:hover{
+    color:#ccc;
+    text-decoration:none;
+    background:#333
+}
+
+.duckiebubble {
+    font-family: serif;
+    font-size: 18px;
+    line-height: 140%;
+}

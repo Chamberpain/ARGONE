@@ -1,0 +1,55 @@
+$def with (lat=None, lng=None, center=30, icon_filename='/static/MarkerDuckie.png')
+
+$if lat:
+    <script>
+        window.initial_tracer = new google.maps.LatLng(${float(lat)}, ${float(lng)});
+        var withinitcond = false;
+    </script>
+$else:
+    <script>
+        window.initial_tracer = null;
+        var withinitcond = true;
+    </script>
+
+<script>
+    $$(document).ready(function(){
+        $$("#map_canvas").css("height", "512px"); // TODO: this should not be done with javascript...
+        var adrift = new AdriftMap(document.getElementById("map_canvas"),{
+            center: new google.maps.LatLng(8, ${float(center)}),
+            icon: "$icon_filename",
+            historyPageName: '/backward', // TODO: better history endpoint.
+            jsonEndpoint: '/runBwd', // TODO: better json.
+        });
+        if (withinitcond) {
+            $$.getJSON('http://api.wipmania.com/jsonp?callback=?', function (data) {
+                adrift.map.panTo(new google.maps.LatLng(8, data.longitude));
+            });
+        }
+
+    });
+</script>
+
+<div class="map_notification_container">
+    <div id="notification">
+        <div id="notification_text">
+            Welcome, click on a point on the ocean
+        </div>
+        <div id="notification_likesbar">
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                <a class="addthis_button_facebook"></a>
+                <a class="addthis_button_twitter"></a>
+            </div>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=undefined"></script>
+            <!-- AddThis Button END -->
+        </div>
+    </div>
+<!--     <div id="zoombar">
+        <a class="zoombar colorbox" href="#regions"><img src="static/zoomin.png" height="15px"> Regional zooms</a>
+    </div> -->
+    <div id="bwdfwdbar">
+        <a class="zoombar colorbox" href="#bwdfwd"><img src="static/fwdbwd/bwdbutton.png" height="15px"> Showing ARGO origin</a>
+    </div>
+    <div id="map_canvas">
+    </div>
+</div>

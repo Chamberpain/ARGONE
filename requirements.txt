@@ -1,0 +1,6 @@
+boto
+mako
+web.py
+numpy
+scipy
+flup

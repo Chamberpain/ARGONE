@@ -1,0 +1,51 @@
+$def with (lat=None, lng=None, center=30, startmon='Jan', icon_filename='/static/MarkerDuckie.png')
+
+$if lat:
+    <script>
+        window.initial_tracer = new google.maps.LatLng(${float(lat)}, ${float(lng)});
+        var withinitcond = false;
+    </script>
+$else:
+    <script>
+        window.initial_tracer = null;
+        var withinitcond = true;
+    </script>
+
+<script>
+    $$(document).ready(function(){
+        $$("#map_canvas").css("height", "512px"); // TODO: this should not be done with javascript...
+        var adrift = new AdriftMap(document.getElementById("map_canvas"),{
+            center: new google.maps.LatLng(8, ${float(center)}),
+            icon: "$icon_filename",
+            startmon : "$startmon",
+        });
+        if (withinitcond) {
+            $$.getJSON('http://api.wipmania.com/jsonp?callback=?', function (data) {
+                adrift.map.panTo(new google.maps.LatLng(8, data.longitude));
+            });
+        }
+    });
+</script>
+
+<div class="map_notification_container">
+    <div id="notification">
+        <div id="notification_text">
+            Welcome, click on a point on the ocean
+        </div>
+<!--         <div id="notification_likesbar">
+          <div class="fb-share-button" data-type="button"></div>
+          <div>
+             <a href="https://twitter.com/share" class="twitter-share-button" data-count="none">Tweet</a>
+             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+           </div>
+        </div>
+ -->    </div>
+<!--     <div id="zoombar">
+        <a class="zoombar colorbox" href="#regions"><img src="static/zoomin.png" height="15px"> Regional zooms</a>
+    </div> -->
+    <div id="bwdfwdbar">
+        <a class="zoombar colorbox" href="#bwdfwd"><img src="static/fwdbwd/fwdbutton.png" height="15px"> Showing where floats end up</a>
+    </div>
+    <div id="map_canvas">
+    </div>
+</div>
