@@ -2,8 +2,8 @@ import sys,os
 sys.path.append(os.path.abspath("./../transition_matrix/"))
 from scipy.io import loadmat,savemat
 from transition_matrix_compute import argo_traj_data
-degree_stepsize = 2
-time_stepsize = 30
+degree_stepsize = 1
+time_stepsize = 60
 traj_class = argo_traj_data(degree_bins=degree_stepsize,date_span_limit=time_stepsize)
 dat = loadmat('./data/tracerappdataGlobal.mat')
 right_shape = dat['P'][0][0].shape
