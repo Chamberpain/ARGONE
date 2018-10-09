@@ -13,7 +13,7 @@ except IOError as e:
       print("({})".format(e))
       print
       print "Error: You need to get the tracerappdata*.mat files first. It then goes in ./data/"
-      print "       Contact Erik van Sebille (mailto: e.vansebille@unsw.edu.au) for this."
+      print "       Contact Paul Chamberlain (mailto: pchamber@ucsd.edu) for this."
       print
       exit()
 
