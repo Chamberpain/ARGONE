@@ -1,5 +1,4 @@
 import web
-import os
 import json
 # from tracer import run_tracer, is_landpoint, get_closest_index, is_lacking_data
 # from cache import get_cached_results, NotCached, cache_results, NotWritten
@@ -11,23 +10,23 @@ import time
 
 data={}
 try:
-      data['Global'] = scipy.io.loadmat('./data/tracerappdataGlobal.mat')
-      data['GlobalBwd'] = scipy.io.loadmat('./data/tracerappdataGlobal_rev.mat')
+    data['Global'] = scipy.io.loadmat('/var/www/webpy-app/data/tracerappdataGlobal.mat')
+#     data['GlobalBwd'] = scipy.io.loadmat('/var/www/webpy-app/data/tracerappdataGlobal_rev.mat')
 
 except IOError as e:
-      print("({})".format(e))
-      # print
-      # print "Error: You need to get the tracerappdata*.mat files first. It then goes in ./data/"
-      # print "       Contact Erik van Sebille (mailto: e.vansebille@unsw.edu.au) for this."
-      # print
-      exit()
+#     print("({})".format(e))
+#     # print
+#     # print "Error: You need to get the tracerappdata*.mat files first. It then goes in ./data/"
+#     # print "       Contact Erik van Sebille (mailto: e.vansebille@unsw.edu.au) for this."
+#     # print
+    exit()
 
 lon = {}
 lat = {}
 lon['Global']=data['Global']['lon'][0]
 lat['Global']=data['Global']['lat'][0]
-lon['GlobalBwd']=data['GlobalBwd']['lon'][0]
-lat['GlobalBwd']=data['GlobalBwd']['lat'][0]
+# lon['GlobalBwd']=data['GlobalBwd']['lon'][0]
+# lat['GlobalBwd']=data['GlobalBwd']['lat'][0]
 
 
 def is_landpoint(closest_index,type):
@@ -84,7 +83,8 @@ urls = ('/', 'Index',
        '/runBwd', 'RunTracerBwd',
        '/bwdfwd','BwdFwd'
 )
-render = web.template.render('./templates/', base='map_layout')
+template_path = '/var/www/webpy-app/templates/'
+render = web.template.render(template_path, base='map')
 
 # set up logging. for more information, see
 # http://docs.python.org/2/howto/logging.html#logging-basic-tutorial
