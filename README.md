@@ -34,4 +34,4 @@ for example, in the test case we executed
 ```
 python main.py test 150
 ``` 
-where test.csv is the csv file we want to open and we want to consider a 150 day propogation (the code automatically rounds up to 280 days).
+where test.csv is the csv file we want to open and we want to consider a 150 day propogation (the code automatically rounds up to 180 days).
