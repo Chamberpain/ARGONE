@@ -20,6 +20,7 @@ To test your code is working, type in the terminal
 python main.py test 150
 ```
 A map of the probability distribution of 4 argo floats should appear. 
+![plot](./test_screenshot.png)
 ## Operation
 main.py looks for csv data files in the Data folder of a specified filename. The csv files should have rows equal to the number of floats in your array with the latitude of the float locations recorded in the latitude column and the longitude recorded in the longitude column. An example of a working csv file is shown in test.csv.
 
