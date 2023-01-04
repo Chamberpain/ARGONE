@@ -5,6 +5,8 @@ The data and scripts found in this repository can be installed by running
 ```
 git clone https://github.com/Chamberpain/ARGONE.git
 ```
+Or by downloading this package from the link above. 
+
 This will create a direction in whatever folder you were named ARGONE that will contain everything in this repository. I recommend using conda for package management and to create a new environment to run this code. Instruction for how to create a new environment in Conda can be found [here](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands). After activating your new environment, you will need to install some dependencies to run this code. If you are running conda, these dependencies can be installed with the following commands: 
 ```
 conda install ipython 
