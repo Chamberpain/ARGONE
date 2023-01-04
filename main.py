@@ -1,7 +1,11 @@
-from TransitionMatrix.Utilities.ArgoData import Core
-from TransitionMatrix.Utilities.TransGeo import TransitionGeo
+from __init__ import ROOT_DIR
+import sys
+sys.path.append(ROOT_DIR)
+
+from list import LonList,LatList,GeoList
+from ArgoData import Core
+from TransGeo import TransitionGeo
 import argparse
-from TransitionMatrix.__init__ import ROOT_DIR
 import argparse
 import folium
 import folium.plugins
@@ -9,19 +13,14 @@ import pandas as pd
 import os
 import geopy
 import numpy as np
-from TransitionMatrix.Utilities.TransMat import TransMat
+from TransMat import TransMat
 from folium.plugins import HeatMap
-class ExcelGeo(TransitionGeo):
-	def make_filename(self):
-		return os.path.join(ROOT_DIR,'argo-90-2-2')
 
 class ExcelFloat(Core):
 	@classmethod
 	def from_excel(cls,filename):
-		from GeneralUtilities.Compute.list import LonList,LatList
-		from TransitionMatrix.Utilities.TransMat import TransMat
-		trans_mat = TransMat.load_from_type(GeoClass=ExcelGeo,lat_spacing = 2,lon_spacing = 2,time_step = 90)
-		file_path = os.path.join(ROOT_DIR,'FloatData/'+filename+'.csv')
+		trans_mat = TransMat.load(os.path.join(ROOT_DIR,'90-2-2.npy'),GeoClass=TransitionGeo)
+		file_path = os.path.join(ROOT_DIR,'Data/'+filename+'.csv')
 		df = pd.read_csv(file_path,usecols=['Latitude','Longitude'])
 		float_lats = LatList(df.Latitude.tolist())
 		lat_bins = trans_mat.trans_geo.get_lat_bins()
@@ -35,11 +34,6 @@ class ExcelFloat(Core):
 			holder_array[idx]+=1
 		return (cls(holder_array,trans_geo=trans_mat.trans_geo),float_lats,float_lons)
 
-
-
-
-
-
 parser = argparse.ArgumentParser()
 parser.add_argument("filename", help="filename of csv file with argo locations",
                     type=str)
@@ -51,7 +45,7 @@ timestep = round(args.timestep/90)
 if args.timestep-timestep*90>45:
 	timestep += 1
 float_array,float_lats,float_lons = ExcelFloat.from_excel(args.filename)
-trans_mat = TransMat.load_from_type(GeoClass=ExcelGeo,lat_spacing = 2,lon_spacing = 2,time_step = 90)
+trans_mat = TransMat.load(os.path.join(ROOT_DIR,'90-2-2.npy'),GeoClass=TransitionGeo)
 trans_calc = trans_mat.multiply(timestep-1)
 
 output = trans_calc.todense().dot(float_array.todense())
@@ -59,6 +53,7 @@ output = [x[0] for x in output.tolist()]
 lats,lons = zip(*trans_mat.trans_geo.total_list.tuple_total_list())
 df = pd.DataFrame({'Latitude':lats,'Longitude':lons,'Probability':output})
 df = df[df.Probability!=0]
+df = df.reset_index(drop=True)
 
 url = 'https://server.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}'
 map=folium.Map(location=[0,0],zoom_start=2)
@@ -74,5 +69,7 @@ HeatMap(df,
                ).add_to(folium.FeatureGroup(name='Heat Map').add_to(map))
 folium.LayerControl().add_to(map)
 
-map.save(outfile=os.path.join(ROOT_DIR,'FloatData/map.html'))
-os.system('open '+os.path.join(ROOT_DIR,'FloatData/map.html'))
+
+df.to_csv(os.path.join(ROOT_DIR,'Output/'+args.filename+'_tm_output.csv'))
+map.save(outfile=os.path.join(ROOT_DIR,'./Output/map.html'))
+os.system('open '+os.path.join(ROOT_DIR,'./Output/map.html'))
