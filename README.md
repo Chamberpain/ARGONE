@@ -7,7 +7,7 @@ git clone https://github.com/Chamberpain/ARGONE.git
 ```
 Or by downloading this package from the link above. 
 
-This will create a direction in whatever folder you were named ARGONE that will contain everything in this repository. I recommend using conda for package management and to create a new environment to run this code. Instruction for how to create a new environment in Conda can be found [here](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands). After activating your new environment, you will need to install some dependencies to run this code. If you are running conda, these dependencies can be installed with the following commands: 
+This will create a directory in whatever folder you were named ARGONE that will contain everything in this repository. I recommend using conda for package management and to create a new environment to run this code. Instruction for how to create a new environment in Conda can be found [here](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands). After activating your new environment, you will need to install some dependencies to run this code. If you are running conda, these dependencies can be installed with the following commands: 
 ```
 conda install ipython 
 conda install pandas
@@ -16,6 +16,16 @@ conda install matplotlib
 conda install -c conda-forge geopy
 conda install shapely
 conda install -c conda-forge folium
+```
+Alternatively, for installing dependancies using pip:
+```
+pip install ipython 
+pip install pandas
+pip install scipy   
+pip install matplotlib
+pip install geopy
+pip install shapely
+pip install folium
 ```
 To test your code is working, type in the terminal 
 ```
