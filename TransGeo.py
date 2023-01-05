@@ -1,4 +1,4 @@
-from GeneralUtilities.Compute.list import find_nearest,flat_list,LonList,LatList,GeoList
+from list import GeoList
 import numpy as np
 import geopy
 import matplotlib.colors
